@@ -35,6 +35,7 @@ const unsigned char cie[256] = {
   7, 6, 5, 4, 3, 2, 1, 0
 };
 */
+
 /*
   // With preheater
   // CIE1931 correction table
@@ -105,4 +106,3 @@ const unsigned char cie[256] = {
   37, 35, 32, 30, 27, 25, 23, 20, 18, 15,
   13, 10, 8, 5, 3, 0,
   };
-

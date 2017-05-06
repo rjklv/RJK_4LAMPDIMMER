@@ -1,4 +1,4 @@
-//#define debug
+#define debug
 
 #define buttonTime 500
 #define scrollTime 20
@@ -93,7 +93,6 @@ void loop() {
 }
 
 #ifdef debug
-int dir = 1;
 int fade = 0;
 #endif
 
@@ -102,9 +101,8 @@ void setLeds() {
   uint8_t ledTmp;
 
 #ifdef debug
-  if (fade >= 255) dir = -1;
-  if (fade <= 0) dir = 1;
-  fade += dir;
+  fade=constrain(trueDmxAddr, 0, 255);
+  
 #endif
 
   for (uint8_t i = 0; i < 4; i++) {

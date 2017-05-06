@@ -20,7 +20,10 @@ unsigned long lastPacket = dmxFailTime;
 unsigned long scrollNext;
 uint16_t dmxaddr = 1;
 uint16_t trueDmxAddr = 1;
-uint8_t modeSet = false;
+uint8_t modeSet = 0;
+
+uint8_t preHeat;
+uint8_t truePreHeat;
 
 Button modeBut = Button(3, false, true, debounceTime);
 Button upBut = Button(2, false, true, debounceTime);
@@ -40,10 +43,14 @@ void setup() {
   setupDipslay();
   EEPROM.get(0, trueDmxAddr);
   trueDmxAddr = constrain(trueDmxAddr, 1, 512);
+
+  EEPROM.get(2, truePreHeat);
+  //truePreheat = constrain(truePreHeat, 0, 255);
 }
 
 uint8_t rawButtons;
 uint8_t dmxOk;
+int value;
 void loop() {
 #ifndef debug
   lastPacket = DMXSerial.noDataSince();
@@ -52,7 +59,7 @@ void loop() {
   dmxOk = lastPacket < dmxFailTime ? true : false;
 
   setLeds();
-  rawButtons = doDigit(dmxaddr, dmxOk, modeSet);
+  rawButtons = doDigit(value, dmxOk, modeSet);
 
   modeBut.read(rawButtons);
   upBut.read(rawButtons);
@@ -60,11 +67,30 @@ void loop() {
   enterBut.read(rawButtons);
 
   if (modeBut.wasPressed()) {
-    if (modeSet) modeSet = false;
-    else modeSet = true;
+    switch (modeSet) {
+      case 0:
+        modeSet=1;        
+        break;        
+      case 1:
+        modeSet=2;
+        value=preHeat;
+        break;
+      case 2:
+        modeSet=0;
+        value=trueDmxAddr;
+        break;
+      default:
+        break;
+    }
+    //if (modeSet) modeSet = false;
+    //else modeSet = true;
   }
 
-  if (modeSet) {
+  if (modeSet==0){
+    value=trueDmxAddr;
+  }
+  if (modeSet==1) {
+    value=dmxaddr;
     if ( downBut.pressedFor(buttonTime) && (millis() >= scrollNext)) {
       dmxaddr--;
       //delay(buttonTime);
@@ -90,6 +116,35 @@ void loop() {
 
   if (dmxaddr < 1) dmxaddr = 512;
   if (dmxaddr > 512) dmxaddr = 1;
+
+  if (modeSet==2){
+    value=preHeat;
+    if ( downBut.pressedFor(buttonTime) && (millis() >= scrollNext)) {
+      preHeat--;
+      //delay(buttonTime);
+      scrollNext = millis() + scrollTime;
+    }
+    if (upBut.pressedFor(buttonTime) && (millis() >= scrollNext)) {
+      preHeat++;
+      //delay(buttonTime);
+      scrollNext = millis() + scrollTime;
+    }
+
+    if (downBut.wasPressed()) preHeat--;
+    if (upBut.wasPressed()) preHeat++;
+
+    if (enterBut.wasPressed()) {
+      truePreHeat = preHeat;
+      modeSet = 0;
+      EEPROM.put(2, truePreHeat);
+    }
+  } else {
+    preHeat = truePreHeat;
+  }
+    
+  //if (preHeat < 0) preHeat = 255;
+  //if (preHeat > 255) preHeat = 0;
+
 }
 
 #ifdef debug
@@ -112,6 +167,7 @@ void setLeds() {
 
 #ifndef debug
       ledTmp = DMXSerial.read(trueDmxAddr + i);
+      if (ledTmp<truePreHeat) ledTmp=truePreHeat;
 #endif
 
 #ifdef debug
