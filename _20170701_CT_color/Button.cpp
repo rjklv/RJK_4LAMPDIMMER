@@ -50,6 +50,16 @@ Button::Button(uint8_t pin, uint8_t puEnable, uint8_t invert, uint32_t dbTime)
 }
 
 /*----------------------------------------------------------------------*
+   isChanged() by JDat
+   return _changed variable for buutoncheck timout
+   not tested
+  ----------------------------------------------------------------------*/
+
+uint8_t Button::isChanged(){
+  return _changed;
+}
+
+/*----------------------------------------------------------------------*
    read() returns the state of the button, 1==pressed, 0==released,
    does debouncing, captures and maintains times, previous states, etc.
   ----------------------------------------------------------------------*/

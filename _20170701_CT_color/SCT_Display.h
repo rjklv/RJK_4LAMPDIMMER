@@ -53,11 +53,47 @@
 #define segSeven  0x70
 #define segEight  0x7F
 #define segNine   0x7B
+
 #define segBlank  0x00
 #define segLetA   0x77
+#define segLetB   0x1F
+#define segLetC   0x4E
+#define segLetD   0x3D
+#define segLetE   0x4F
+#define segLetF   0x47
+
+#define segLetG   0x5E
+#define segLetH   0x17
+#define segLetI   0x06
+#define segLetJ   0x3C
+
+#define segLetK   0x08
+
+#define segLetL   0x0E
+#define segLetM   0x54
+#define segLetN   0x15
+#define segLetO   0x1D
 #define segLetP   0x67
 
-const uint8_t charGen[] = {segZero, segOne, segTwo, segThree, segFour, segFive, segSix, segSeven, segEight, segNine, segBlank, segLetA, segLetP};
+#define segLetQ   0x08
+
+#define segLetR   0x05
+#define segLetS   0x5B
+#define segLetT   0x0F
+#define segLetU   0x3E
+
+#define segLetV   0x08
+
+#define segLetW   0x1C
+#define segLetX   0x37
+#define segLetY   0x3B
+
+#define segLetZ   0x08
+
+const uint8_t charGen[] = {segZero, segOne, segTwo, segThree, segFour, segFive, segSix, segSeven, segEight, segNine,
+                          segBlank, segLetA, segLetB, segLetC, segLetD, segLetE, segLetF, segLetG, segLetH, segLetI,
+                          segLetJ, segLetK, segLetL, segLetM, segLetN, segLetO, segLetP, segLetQ, segLetR, segLetS,
+                          segLetT, segLetU, segLetV, segLetW, segLetX, segLetY, segLetZ};
 
 const uint8_t segPins[4][8] = {
   {seg0PinG, seg0PinF, seg0PinE, seg0PinD, seg0PinC, seg0PinB, seg0PinA, seg0PinDP},
@@ -67,7 +103,25 @@ const uint8_t segPins[4][8] = {
 
 };
 
+#define strAddr "Addr"
+#define strAxxx "Axxx"
+
+#define strMode "Mode"
+#define strDMX "DATA"
+#define strStandalone "STDL"
+
+#define strCol "Col_"
+#define strR "Rxxx"
+#define strG "Gxxx"
+#define strB "Bxxx"
+#define strW "Wxxx"
+
+#define strExit "Exit"
+
+
 void setupDisplay(void);
-uint8_t doDigit(int dmxaddr, uint8_t dp, uint8_t mode);
+void sendToSCT(void);
+//uint8_t doDigit(int dmxaddr, uint8_t dp, uint8_t mode);
+uint8_t doDigit(uint8_t dig3, uint8_t dig2, uint8_t dig1, uint8_t dig0, uint8_t dp);
 
 #endif

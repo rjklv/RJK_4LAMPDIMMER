@@ -1,0 +1,1 @@
+avrdude -p m328p -c arduino -P com3 -b 19200 -U lfuse:w:0xC7:m -U hfuse:w:0xD3:m -U efuse:w:0xFD:m

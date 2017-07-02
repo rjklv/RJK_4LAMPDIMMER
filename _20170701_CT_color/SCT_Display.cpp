@@ -12,33 +12,25 @@ uint8_t i;
 unsigned long segArr;
 int tmp;
 
-uint8_t doDigit(int dmxaddr, uint8_t dp, uint8_t mode) {  
+uint8_t doDigit(uint8_t dig3, uint8_t dig2, uint8_t dig1, uint8_t dig0, uint8_t dp) {  
 
-  if (dmxaddr>=1000){
-    for (i = 0; i < 3; i++) {
-      digitArr[i] = 0;
-      bitSet(digitArr[0], 7);
-    }
-  } else {
-    tmp = dmxaddr - (dmxaddr % 100);
-    digitArr[2] = tmp / 100;
-    tmp = dmxaddr - (dmxaddr % 10) - (digitArr[2] * 100);
-    digitArr[1] = tmp / 10;
-    digitArr[0] = dmxaddr - (digitArr[2] * 100) - (digitArr[1] * 10);
+  digitArr[0]=dig0;
+  digitArr[1]=dig1;
+  digitArr[2]=dig2;
+  digitArr[3]=dig3;
   
-    for (i = 0; i < 3; i++) {
-      digitArr[i] = charGen[digitArr[i]];    
-      //if (dp != 0) bitSet(digitArr[i], 7);
-      //else bitClear(digitArr[i], 7);
-    }
+  for (i = 0; i < 4; i++) {
+    digitArr[i] = charGen[digitArr[i]];    
   }
-  
-  // set segment 3 (left) according to mode
-  if (mode == 1) digitArr[3] = charGen[11];
-  else if (mode == 2) digitArr[3] = charGen[12];
-  else digitArr[3] = 0;
 
-  // set segment 3 (left) decimal point
+  //set decimal point 0 (right) if display in sleep mode (sending blank characetrs
+  //if ( (digitArr[0]==10) && (digitArr[1]==10) && (digitArr[2]==10) && (digitArr[3]==10) ){
+    bitSet(digitArr[0], 7);
+  //} else {
+    //bitClear(digitArr[0], 7);
+  //}
+  
+  // set segment 3 (left) decimal point if DMX present
   if (dp != 0) bitSet(digitArr[3], 7);
   else bitClear(digitArr[3], 7);
 
@@ -52,7 +44,11 @@ uint8_t doDigit(int dmxaddr, uint8_t dp, uint8_t mode) {
       }
     }
   }
+  sendToSCT();
+}
 
+void sendToSCT(void){
+    //send to SCT chip via hardware pins
   digitalWrite(laPin, LOW); //latch low, activeate shift register
   for (i = 0; i < 32; i++) {
     if (bitRead(segArr, i)) {
@@ -63,6 +59,7 @@ uint8_t doDigit(int dmxaddr, uint8_t dp, uint8_t mode) {
   }
   digitalWrite(laPin, HIGH); //latch high, copy new data from shift register to display
   digitalWrite(laPin, LOW); //latch low, activeate shift register
+
 }
 
 void setupDisplay(void) {
