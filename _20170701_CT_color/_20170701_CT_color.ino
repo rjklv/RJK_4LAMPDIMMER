@@ -21,10 +21,10 @@
 #define ledPin3 5
 
 // button input pins
-#define modePin A1
-#define upPin A0
-#define downPin 12
-#define enterPin 11
+#define modePin1 11
+#define upPin2 12
+#define downPin3 A0
+#define enterPin4 A1
 
 unsigned long lastPacket = dmxFailTime;
 
@@ -49,10 +49,10 @@ uint8_t dig3=10,dig2=10,dig1=10,dig0=10;
 
 uint8_t standaloneColor[]={0,0,0,0};
 
-Button modeBut = Button(modePin, true, true, debounceTime);
-Button upBut = Button(upPin, true, true, debounceTime);
-Button downBut = Button(downPin, true, true, debounceTime);
-Button enterBut = Button(enterPin, true, true, debounceTime);
+Button modeBut = Button(modePin1, true, true, debounceTime);
+Button upBut = Button(upPin2, true, true, debounceTime);
+Button downBut = Button(downPin3, true, true, debounceTime);
+Button enterBut = Button(enterPin4, true, true, debounceTime);
 
 void numberToDigits(int indata){
     int tmp = indata - (indata % 100);
@@ -91,6 +91,7 @@ enum _menuState{
       menuColorBlue=9,
       menuColorWhite=10,
     menuExit=11,
+  sleep=12,
 };
 
 uint8_t menuState=work;
@@ -99,6 +100,27 @@ uint8_t tmpColor;
 
 uint8_t menuStateMachine(void){
   switch (menuState){
+    case sleep:
+      if (modeBut.wasPressed()) {
+        menuState=menuAddress;      
+        return;
+      }
+      if (enterBut.wasPressed()) {
+        menuState=menuAddress;      
+        return;
+      }
+      if (upBut.wasPressed()) {
+        menuState=menuAddress;      
+        return;
+      }
+      if (downBut.wasPressed()) {
+        menuState=menuAddress;      
+        return;
+      }
+      dig0=10;
+      dig1=10;
+      dig2=10;
+      dig3=10;
     case work:
       if (blankScreen==true){
         return;
@@ -553,13 +575,17 @@ void loop() {
   menuStateMachine();
   
 
-  if ( modeBut.isChanged() ) {
+  if ( modeBut.isChanged() || enterBut.isChanged() || downBut.isChanged() || upBut.isChanged() ) {
+    if ( menuState==sleep ) {
+      menuState=work;
+    }
     blankNext = millis() + blankTime;
     blankScreen=false;
     //menuState=work;
   } else {    
     if (millis() >= blankNext) {
       //doBlankScreen
+      menuState=sleep;
       blankScreen=true;
       dig0=10;
       dig1=10;
