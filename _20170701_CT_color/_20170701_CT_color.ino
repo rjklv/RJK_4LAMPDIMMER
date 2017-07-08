@@ -20,11 +20,17 @@
 #define ledPin2 6
 #define ledPin3 5
 
-// button input pins
-#define modePin1 11
-#define upPin2 12
-#define downPin3 A0
-#define enterPin4 A1
+// button input pins for production version
+//#define modePin1 11
+//#define upPin2 12
+//#define downPin3 A0
+//#define enterPin4 A1
+
+// button input pins for 1st test version
+#define modePin1 A1
+#define upPin2 A0
+#define downPin3 12
+#define enterPin4 11
 
 unsigned long lastPacket = dmxFailTime;
 
@@ -101,22 +107,6 @@ uint8_t tmpColor;
 uint8_t menuStateMachine(void){
   switch (menuState){
     case sleep:
-      if (modeBut.wasPressed()) {
-        menuState=menuAddress;      
-        return;
-      }
-      if (enterBut.wasPressed()) {
-        menuState=menuAddress;      
-        return;
-      }
-      if (upBut.wasPressed()) {
-        menuState=menuAddress;      
-        return;
-      }
-      if (downBut.wasPressed()) {
-        menuState=menuAddress;      
-        return;
-      }
       dig0=10;
       dig1=10;
       dig2=10;
@@ -574,14 +564,18 @@ void loop() {
 
   menuStateMachine();
   
-
-  if ( modeBut.isChanged() || enterBut.isChanged() || downBut.isChanged() || upBut.isChanged() ) {
+  if ( ( menuState!=sleep ) && ( enterBut.isChanged() || downBut.isChanged() || upBut.isChanged() ) ) {
+    //menuState=work;
+    blankNext = millis() + blankTime;
+    blankScreen=false;
+  }
+  
+  if ( modeBut.isChanged()) {
     if ( menuState==sleep ) {
       menuState=work;
     }
     blankNext = millis() + blankTime;
     blankScreen=false;
-    //menuState=work;
   } else {    
     if (millis() >= blankNext) {
       //doBlankScreen

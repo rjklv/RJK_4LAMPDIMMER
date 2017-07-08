@@ -2,8 +2,6 @@
 #define cie1931
 #include <Arduino.h>
 
-#define xLmul 100.0f/255.0f
-#define maxOut 255
 uint8_t cieTable(uint8_t index);
 
 const unsigned char cie[256] = {

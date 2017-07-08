@@ -3,10 +3,16 @@
 
 #include <Arduino.h>
 
-#define laPin A2
-#define clkPin A3
-#define sdiPin 2
+//for production version
+//#define laPin A2
+//#define clkPin A3
+//#define sdiPin 2
 
+//for 1st test version
+#define laPin A3
+#define clkPin A4
+#define sdiPin A5
+ 
 #define seg0PinA 17
 #define seg0PinB 16
 #define seg0PinC 30
@@ -102,22 +108,6 @@ const uint8_t segPins[4][8] = {
   {seg3PinG, seg3PinF, seg3PinE, seg3PinD, seg3PinC, seg3PinB, seg3PinA, seg3PinDP}
 
 };
-
-#define strAddr "Addr"
-#define strAxxx "Axxx"
-
-#define strMode "Mode"
-#define strDMX "DATA"
-#define strStandalone "STDL"
-
-#define strCol "Col_"
-#define strR "Rxxx"
-#define strG "Gxxx"
-#define strB "Bxxx"
-#define strW "Wxxx"
-
-#define strExit "Exit"
-
 
 void setupDisplay(void);
 void sendToSCT(void);
