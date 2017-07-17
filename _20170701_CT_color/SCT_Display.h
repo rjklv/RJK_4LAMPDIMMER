@@ -4,14 +4,14 @@
 #include <Arduino.h>
 
 //for production version
-//#define laPin A2
-//#define clkPin A3
-//#define sdiPin 2
+#define laPin A2
+#define clkPin A3
+#define sdiPin 2
 
 //for 1st test version
-#define laPin A3
-#define clkPin A4
-#define sdiPin A5
+//#define laPin A3
+//#define clkPin A4
+//#define sdiPin A5
  
 #define seg0PinA 17
 #define seg0PinB 16

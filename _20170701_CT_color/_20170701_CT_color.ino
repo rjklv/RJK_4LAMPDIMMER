@@ -1,6 +1,6 @@
 //#define debug
 
-#define whiteMax 230          //maximum intensity for ledPin4 (white channel)
+#define whiteMax 255          //maximum intensity for ledPin4 (white channel)
 
 #define blankTime 30 * 1000   //display blank time in milliseconds
 #define buttonTime 500        //timount for scroll start in milliseconds
@@ -21,16 +21,16 @@
 #define ledPin3 5
 
 // button input pins for production version
-//#define modePin1 11
-//#define upPin2 12
-//#define downPin3 A0
-//#define enterPin4 A1
+#define modePin1 11
+#define upPin2 12
+#define downPin3 A0
+#define enterPin4 A1
 
 // button input pins for 1st test version
-#define modePin1 A1
-#define upPin2 A0
-#define downPin3 12
-#define enterPin4 11
+//#define modePin1 A1
+//#define upPin2 A0
+//#define downPin3 12
+//#define enterPin4 11
 
 unsigned long lastPacket = dmxFailTime;
 
