@@ -1,7 +1,7 @@
 // CIE1931 correction table
 // Automatically generated
 
-const unsigned char cie[256] = {
+const uint16_6 cie[256] = {
 	0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 
 	18, 20, 21, 23, 25, 27, 28, 30, 32, 34, 
 	36, 37, 39, 41, 43, 45, 47, 49, 52, 54, 
