@@ -181,18 +181,11 @@ void PCA9685::setChannelPWM(int channel, uint16_t pwmAmount) {
 
     writeChannelBegin(channel);
 
-    //uint16_t phaseBegin, phaseEnd;
-    //getPhaseCycle(channel, pwmAmount, &phaseBegin, &phaseEnd);
+    uint16_t phaseBegin, phaseEnd;
+    getPhaseCycle(channel, pwmAmount, &phaseBegin, &phaseEnd);
 
-    //writeChannelPWM(phaseBegin, phaseEnd);
-    //if (pwmAmount == 0) {
-      writeChannelPWM(pwmAmount,PCA9685_PWM_FULL-1);
-      //writeChannelPWM(PCA9685_PWM_FULL, 0);
-    //} else {
-      //writeChannelPWM(pwmAmount,PCA9685_PWM_FULL);
-      //writeChannelPWM(pwmAmount, 4095-pwmAmount);
-    //}
-    
+    writeChannelPWM(phaseBegin, phaseEnd);
+
     writeChannelEnd();
 }
 
